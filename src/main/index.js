@@ -19,7 +19,7 @@ const winURL =
     ? `http://localhost:9080` // 开发模式的话走webpack-dev-server的url
     : `file://${__dirname}/index.html`
 
-function createWindow() {
+function createWindow () {
   // 创建窗口
   /**
    * Initial window options
@@ -48,7 +48,7 @@ function createWindow() {
   })
 }
 
-function createMenu() {
+function createMenu () {
   // 创建目录
   /**
    * Initial Menu Options
@@ -76,7 +76,7 @@ function createMenu() {
           {
             label: 'Quit',
             accelerator: 'CmdOrCtrl+Q',
-            click() {
+            click () {
               app.quit()
             }
           }
@@ -88,7 +88,7 @@ function createMenu() {
   }
 }
 
-function bootConfig() {
+function bootConfig () {
   createWindow()
   createMenu()
 }

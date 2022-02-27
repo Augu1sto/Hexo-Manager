@@ -10,14 +10,18 @@
 // Install `electron-debug` with `devtron`
 require('electron-debug')({ showDevTools: true })
 
+const{BrowserWindow}=require("electron")
 // Install `vue-devtools`
 require('electron').app.on('ready', () => {
+  BrowserWindow.addDevToolsExtension('E:/download/devtools-5.1.1/shells/chrome/')
   let installExtension = require('electron-devtools-installer')
   installExtension.default(installExtension.VUEJS_DEVTOOLS)
     .then(() => {})
     .catch(err => {
       console.log('Unable to install `vue-devtools`: \n', err)
     })
+    
+
 })
 
 // Require `main` process to boot app
