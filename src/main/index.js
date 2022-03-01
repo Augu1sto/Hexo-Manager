@@ -25,15 +25,25 @@ function createWindow () {
    * Initial window options
    */
   mainWindow = new BrowserWindow({
-    height: 900,
+    height: 500,
     useContentSize: true,
-    width: 1000,
+    width: 720,
     title: 'Hexo-Manager',
     center: true,
     frame: true,
+    titleBarStyle: 'hidden',
     resizable: true,
-    backgroundColor: '#fff',
-    alwaysOnTop: true
+    backgroundColor: '#F2F2F2',
+    // alwaysOnTop: true,
+
+    webPreferences: {
+      // 开启node
+      nodeIntegration: true,
+      contextIsolation: false,
+      // 开启remote
+      enableRemoteModule: true
+
+    }
   })
 
   mainWindow.loadURL(winURL) // 加载窗口的URL -> 来自renderer进程的页面

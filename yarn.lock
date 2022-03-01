@@ -2593,7 +2593,7 @@ chalk@^2.0.0, chalk@^2.0.1, chalk@^2.1.0, chalk@^2.4.1, chalk@^2.4.2:
     escape-string-regexp "^1.0.5"
     supports-color "^5.3.0"
 
-chalk@^4.1.0, chalk@^4.1.1, chalk@^4.1.2:
+chalk@^4.0.0, chalk@^4.1.0, chalk@^4.1.1, chalk@^4.1.2:
   version "4.1.2"
   resolved "https://registry.npmmirror.com/chalk/-/chalk-4.1.2.tgz#aac4e2b7734a740867aeb16bf02aad556a1e7a01"
   integrity sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA==
@@ -4126,12 +4126,12 @@ elegant-spinner@^1.0.1:
 
 element-theme-chalk@^2.15.6:
   version "2.15.6"
-  resolved "https://registry.npmmirror.com/element-theme-chalk/-/element-theme-chalk-2.15.6.tgz#54960c5d39834fbe45e3f94c95d16ca62032ab4f"
+  resolved "https://registry.npmjs.org/element-theme-chalk/-/element-theme-chalk-2.15.6.tgz#54960c5d39834fbe45e3f94c95d16ca62032ab4f"
   integrity sha512-xz5drQxpid6Yw0zETIVprZiPoZvt6dxpTthkDn8LxYg+F+3Yh1LThCEWutTHNnDKjfQkG9JqbNHsXMmCSr4vrA==
 
 element-ui@^2.15.6:
   version "2.15.6"
-  resolved "https://registry.npmmirror.com/element-ui/-/element-ui-2.15.6.tgz#c9609add35af5a686a4b7685dc1d757c75e01df3"
+  resolved "https://registry.npmjs.org/element-ui/-/element-ui-2.15.6.tgz#c9609add35af5a686a4b7685dc1d757c75e01df3"
   integrity sha512-rcYXEKd/j2G0AgficAOk1Zd1AsnHRkhmrK4yLHmNOiimU2JfsywgfKUjMoFuT6pQx0luhovj8lFjpE4Fnt58Iw==
   dependencies:
     async-validator "~1.8.1"
