@@ -54,6 +54,7 @@ let mainConfig = {
   resolve: {
     extensions: ['.js', '.json', '.node']
   },
+  devtool: 'source-map',
   target: 'electron-main'
 }
 

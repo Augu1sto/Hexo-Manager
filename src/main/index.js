@@ -3,6 +3,7 @@
 import { app, BrowserWindow, Menu, ipcMain, shell } from 'electron' // 从electron引入app和BrowserWindow
 import '../renderer/store'
 import { exec } from 'child_process'
+// import { iconv } from 'iconv-lite'
 
 /**
  * Set `__static` path to static files in production
@@ -43,7 +44,6 @@ function createWindow () {
       contextIsolation: false,
       // 开启remote
       enableRemoteModule: true
-
     }
   })
 
@@ -136,7 +136,7 @@ ipcMain.on('close_w', () => {
   }
 })
 
-let hexoRoot = 'D:\\MyBlog'
+let hexoRoot = 'E:\\MyBlog'
 
 ipcMain.on('newFile', (event, value, fname) => {
   console.log(value + fname)
@@ -146,20 +146,25 @@ ipcMain.on('newFile', (event, value, fname) => {
 
 function newAndOpenFile (value, fname) {
   const cmdPath = hexoRoot
-  const cmdStr = 'hexo new ' + value // hexo new [article_name]
-  const workerProcess = exec(cmdStr, { cwd: cmdPath, encoding: 'utf8' })
-  workerProcess.stdout.on('data', function (data) {
-    console.log('stdout: ' + data)
+  const cmdStr = 'hexo new "' + value + '"' // hexo new [article_name]
+  // const cmdStr0 = iconv.decode(cmdStr, 'cp936')
+  const workerProcess = exec(cmdStr, {
+    cwd: cmdPath,
+    encoding: 'gbk'
+  })
+  workerProcess.stdout.on('data', (data) => {
+    console.log('stdout: ' + data.toString())
   })
 
   // 打印错误的后台可执行程序输出
-  workerProcess.stderr.on('data', function (data) {
-    console.log('stderr: ' + data)
+  workerProcess.stderr.on('data', (data) => {
+    console.log('stderr: ' + data.toString())
   })
 
   // 退出之后的输出
-  workerProcess.on('close', function (code) {
+  workerProcess.on('close', (code) => {
     console.log('out code：' + code)
+
     try {
       shell.openPath(hexoRoot + '\\source\\_posts\\' + fname + '.md')
     } catch (error) {

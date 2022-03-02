@@ -65,7 +65,7 @@ export default {
       this.$electron.remote.dialog
         .showOpenDialog({
           title: '打开文件',
-          defaultPath: 'D:\\MyBlog\\source\\_posts',
+          defaultPath: 'E:\\MyBlog\\source\\_posts',
           properties: ['openFile'],
           filters: [{ name: 'Markdown文件', extensions: ['md', 'markdown'] }]
         })
@@ -87,7 +87,7 @@ export default {
         // inputErrorMessage: '邮箱格式不正确'
       })
         .then(({ value }) => {
-          const fname = value.replace(/[<>:"/\\|?*]+/g, '-') // 转化文件名，去除特殊字符
+          const fname = value.replace(/[<>:"/\\|?* ]+/g, '-') // 转化文件名，去除特殊字符(包含空格)
           // this.$message({
           //   type: 'success',
           //   message: '新建文章: ' + fname + '.md'
