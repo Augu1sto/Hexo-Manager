@@ -1,7 +1,8 @@
 'use strict'
 
-import { app, BrowserWindow, Menu } from 'electron' // 从electron引入app和BrowserWindow
+import { app, BrowserWindow, Menu, ipcMain, shell } from 'electron' // 从electron引入app和BrowserWindow
 import '../renderer/store'
+import { exec } from 'child_process'
 
 /**
  * Set `__static` path to static files in production
@@ -119,6 +120,53 @@ app.on('activate', () => {
     createWindow()
   }
 })
+
+ipcMain.on('minimize_w', () => {
+  const window = BrowserWindow.getFocusedWindow()
+  window.minimize()
+})
+
+ipcMain.on('close_w', () => {
+  const window = BrowserWindow.getFocusedWindow()
+  if (process.platform === 'linux') {
+    window.hide()
+  } else {
+    window.close()
+    app.quit()
+  }
+})
+
+let hexoRoot = 'D:\\MyBlog'
+
+ipcMain.on('newFile', (event, value, fname) => {
+  console.log(value + fname)
+  newAndOpenFile(value, fname)
+  event.returnValue = 'success'
+})
+
+function newAndOpenFile (value, fname) {
+  const cmdPath = hexoRoot
+  const cmdStr = 'hexo new ' + value // hexo new [article_name]
+  const workerProcess = exec(cmdStr, { cwd: cmdPath, encoding: 'utf8' })
+  workerProcess.stdout.on('data', function (data) {
+    console.log('stdout: ' + data)
+  })
+
+  // 打印错误的后台可执行程序输出
+  workerProcess.stderr.on('data', function (data) {
+    console.log('stderr: ' + data)
+  })
+
+  // 退出之后的输出
+  workerProcess.on('close', function (code) {
+    console.log('out code：' + code)
+    try {
+      shell.openPath(hexoRoot + '\\source\\_posts\\' + fname + '.md')
+    } catch (error) {
+      console.error(error)
+    }
+  })
+}
 
 /**
  * Auto Updater

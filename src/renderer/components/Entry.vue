@@ -4,10 +4,10 @@
       Hexo-Manager
       <div class="handle-bar">
         <!-- 如果是windows系统 就加上模拟的操作按钮-->
-        <!-- <i class="el-icon-minus" @click="minimizeWindow"></i>
-        <i class="el-icon-close" @click="closeWindow"></i> -->
-        <i class="el-icon-minus"></i>
-        <i class="el-icon-close"></i>
+        <i class="el-icon-minus" @click="minimizeWindow"></i>
+        <i class="el-icon-close" @click="closeWindow"></i>
+        <!-- <i class="el-icon-minus"></i>
+        <i class="el-icon-close"></i> -->
       </div>
     </div>
     <el-container>
@@ -52,6 +52,15 @@
 <script>
 export default {
   methods: {
+    minimizeWindow () {
+      const { ipcRenderer } = require('electron')
+      ipcRenderer.send('minimize_w')
+    },
+
+    closeWindow () {
+      const { ipcRenderer } = require('electron')
+      ipcRenderer.send('close_w')
+    },
     openFile () {
       this.$electron.remote.dialog
         .showOpenDialog({
@@ -72,16 +81,26 @@ export default {
     openNew () {
       this.$prompt('请输入文章名', '新建文章', {
         confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        inputPattern:
-          /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
-        inputErrorMessage: '邮箱格式不正确'
+        cancelButtonText: '取消'
+        // inputPattern:
+        //   /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
+        // inputErrorMessage: '邮箱格式不正确'
       })
         .then(({ value }) => {
-          this.$message({
-            type: 'success',
-            message: '文章名: ' + value
-          })
+          const fname = value.replace(/[<>:"/\\|?*]+/g, '-') // 转化文件名，去除特殊字符
+          // this.$message({
+          //   type: 'success',
+          //   message: '新建文章: ' + fname + '.md'
+          // })
+          const { ipcRenderer } = require('electron')
+          const replyMessage = ipcRenderer.sendSync('newFile', value, fname)
+          if (replyMessage === 'success') {
+            this.$message({
+              type: 'success',
+              message: '新建文章: ' + fname + '.md'
+            })
+            console.log(replyMessage)
+          }
         })
         .catch(() => {
           this.$message({
@@ -90,14 +109,6 @@ export default {
           })
         })
     }
-  },
-
-  minimizeWindow () {
-    // ipcRenderer.send(MINIMIZE_WINDOW);
-  },
-
-  closeWindow () {
-    // ipcRenderer.send(CLOSE_WINDOW);
   }
 }
 </script>
