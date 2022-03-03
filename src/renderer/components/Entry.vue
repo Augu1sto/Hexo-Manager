@@ -4,6 +4,7 @@
       Hexo-Manager
       <div class="handle-bar">
         <!-- 如果是windows系统 就加上模拟的操作按钮-->
+        <i class="el-icon-setting" @click="setConfig"></i>
         <i class="el-icon-minus" @click="minimizeWindow"></i>
         <i class="el-icon-close" @click="closeWindow"></i>
         <!-- <i class="el-icon-minus"></i>
@@ -41,7 +42,9 @@
           </el-row>
           <el-row>
             <el-col :span="20">
-              <el-button type="primary" style="width: 100%">一键部署</el-button>
+              <el-button type="primary" style="width: 100%" @click="deployAll"
+                >一键部署</el-button
+              >
             </el-col>
           </el-row>
         </el-main>
@@ -52,6 +55,31 @@
 <script>
 export default {
   methods: {
+    setConfig () {
+      this.$prompt('设置', 'hexo根目录：', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消'
+      })
+        .then(({ value }) => {
+          // const fname = value.replace(/[<>:"/\\|?* ]+/g, '-') // 转化文件名，去除特殊字符(包含空格)
+          const { ipcRenderer } = require('electron')
+          const replyMessage = ipcRenderer.sendSync('setConfig', value)
+          if (replyMessage === 'setSuccess') {
+            this.$message({
+              type: 'success',
+              message: '设置成功'
+            })
+            console.log(replyMessage)
+          }
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '取消输入'
+          })
+        })
+    },
+
     minimizeWindow () {
       const { ipcRenderer } = require('electron')
       ipcRenderer.send('minimize_w')
@@ -62,36 +90,17 @@ export default {
       ipcRenderer.send('close_w')
     },
     openFile () {
-      this.$electron.remote.dialog
-        .showOpenDialog({
-          title: '打开文件',
-          defaultPath: 'E:\\MyBlog\\source\\_posts',
-          properties: ['openFile'],
-          filters: [{ name: 'Markdown文件', extensions: ['md', 'markdown'] }]
-        })
-        .then((result) => {
-          console.log(result.filePaths) // 获得打开的文件路径
-          this.$electron.remote.shell.openPath(result.filePaths[0])
-        })
-        .catch((err) => {
-          console.log(err)
-        })
+      const { ipcRenderer } = require('electron')
+      ipcRenderer.send('open_file')
     },
 
     openNew () {
       this.$prompt('请输入文章名', '新建文章', {
         confirmButtonText: '确定',
         cancelButtonText: '取消'
-        // inputPattern:
-        //   /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
-        // inputErrorMessage: '邮箱格式不正确'
       })
         .then(({ value }) => {
           const fname = value.replace(/[<>:"/\\|?* ]+/g, '-') // 转化文件名，去除特殊字符(包含空格)
-          // this.$message({
-          //   type: 'success',
-          //   message: '新建文章: ' + fname + '.md'
-          // })
           const { ipcRenderer } = require('electron')
           const replyMessage = ipcRenderer.sendSync('newFile', value, fname)
           if (replyMessage === 'success') {
@@ -108,6 +117,18 @@ export default {
             message: '取消输入'
           })
         })
+    },
+
+    deployAll () {
+      const { ipcRenderer } = require('electron')
+      const replyMessage = ipcRenderer.sendSync('deploy_all')
+      if (replyMessage === 'deploySuccess') {
+        this.$message({
+          type: 'success',
+          message: '部署成功'
+        })
+        console.log(replyMessage)
+      }
     }
   }
 }
@@ -159,11 +180,14 @@ export default {
   font-size: 16px;
   margin-left: 5px;
 }
+.handle-bar .el-icon-setting:hover {
+  color: #ffffff;
+}
 .handle-bar .el-icon-minus:hover {
-  color: #71b6ff;
+  color: #ffffff;
 }
 .handle-bar .el-icon-close:hover {
-  color: #bdbeff;
+  color: #af0000;
 }
 
 .el-row {

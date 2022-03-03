@@ -1,9 +1,9 @@
 'use strict'
 
-import { app, BrowserWindow, Menu, ipcMain, shell } from 'electron' // 从electron引入app和BrowserWindow
+import { app, BrowserWindow, Menu, ipcMain, shell, dialog } from 'electron' // 从electron引入app和BrowserWindow
 import '../renderer/store'
 import { exec } from 'child_process'
-// import { iconv } from 'iconv-lite'
+// import { Store } from 'electron-store'
 
 /**
  * Set `__static` path to static files in production
@@ -136,7 +136,23 @@ ipcMain.on('close_w', () => {
   }
 })
 
-let hexoRoot = 'E:\\MyBlog'
+let hexoRoot
+const Store = require('electron-store')
+const store = new Store()
+// 通过配置文件读写hexo根目录
+function getRoot () {
+  hexoRoot = store.get('hexo_root')
+}
+
+function setRoot (root) {
+  store.set('hexo_root', root)
+}
+
+ipcMain.on('setConfig', (event, value) => {
+  console.log(value)
+  setRoot(value)
+  event.returnValue = 'setSuccess'
+})
 
 ipcMain.on('newFile', (event, value, fname) => {
   console.log(value + fname)
@@ -145,8 +161,9 @@ ipcMain.on('newFile', (event, value, fname) => {
 })
 
 function newAndOpenFile (value, fname) {
+  getRoot()
   const cmdPath = hexoRoot
-  const cmdStr = 'hexo new "' + value + '"' // hexo new [article_name]
+  const cmdStr = 'hexo new "' + value + '"' // hexo new "[article_name]"
   // const cmdStr0 = iconv.decode(cmdStr, 'cp936')
   const workerProcess = exec(cmdStr, {
     cwd: cmdPath,
@@ -173,6 +190,51 @@ function newAndOpenFile (value, fname) {
   })
 }
 
+ipcMain.on('open_file', () => {
+  openFile()
+})
+
+function openFile () {
+  getRoot()
+  dialog.showOpenDialog({
+    title: '打开文件',
+    defaultPath: hexoRoot + '\\source\\_posts\\',
+    properties: ['openFile'],
+    filters: [{ name: 'Markdown文件', extensions: ['md', 'markdown'] }]
+  })
+    .then((result) => {
+      console.log(result.filePaths) // 获得打开的文件路径
+      shell.openPath(result.filePaths[0])
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+}
+
+ipcMain.on('deploy_all', (event) => {
+  getRoot()
+  const cmdPath = hexoRoot
+  const cmdStr = 'hexo cl&&hexo g -d'
+  // const cmdStr0 = iconv.decode(cmdStr, 'cp936')
+  const workerProcess = exec(cmdStr, {
+    cwd: cmdPath,
+    encoding: 'gbk'
+  })
+  workerProcess.stdout.on('data', (data) => {
+    console.log('stdout: ' + data.toString())
+  })
+
+  // 打印错误的后台可执行程序输出
+  workerProcess.stderr.on('data', (data) => {
+    console.log('stderr: ' + data.toString())
+  })
+
+  // 退出之后的输出
+  workerProcess.on('close', (code) => {
+    console.log('out code：' + code)
+    event.returnValue = 'deploySuccess'
+  })
+})
 /**
  * Auto Updater
  *
