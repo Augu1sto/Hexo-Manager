@@ -4159,7 +4159,7 @@ electron-store@^2.0.0:
 
 electron-store@^8.0.1:
   version "8.0.1"
-  resolved "https://registry.npmjs.org/electron-store/-/electron-store-8.0.1.tgz#9b598c1d2edeffebee9d8c1cd957ad368c528925"
+  resolved "https://registry.npmmirror.com/electron-store/-/electron-store-8.0.1.tgz#9b598c1d2edeffebee9d8c1cd957ad368c528925"
   integrity sha512-ZyLvNywiqSpbwC/pp89O/AycVWY/UJIkmtyzF2Bd0Nm/rLmcFc0NTGuLdg6+LE8mS8qsiK5JMoe4PnrecLHH5w==
   dependencies:
     conf "^10.0.3"

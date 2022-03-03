@@ -1,8 +1,8 @@
 {
-  "name": "my-project",
-  "version": "0.0.1",
+  "name": "Hexo-Manager",
+  "version": "0.0.1-alpha",
   "author": "augu1sto",
-  "description": "Hexo-Manager devepoled by electron-vue",
+  "description": "Hexo-Manager developed by electron-vue",
   "license": null,
   "main": "./dist/electron/main.js",
   "scripts": {
@@ -22,8 +22,8 @@
     "postinstall": "npm run lint:fix"
   },
   "build": {
-    "productName": "my-project",
-    "appId": "",
+    "productName": "Hexo-Manager",
+    "appId": "com.augu1sto.hexo-manager",
     "directories": {
       "output": "build"
     },
@@ -49,21 +49,26 @@
       "icon": "build/icons/icon.icns"
     },
     "win": {
-      "icon": "build/icons/icon.ico"
+      "icon": "build/icons/icon_.ico",
+      "target": "nsis"
     },
     "linux": {
       "icon": "build/icons"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
     }
   },
   "dependencies": {
     "axios": "^0.21.0",
     "element-ui": "^2.15.6",
-    "iconv-lite": "^0.6.3",
     "vue": "^2.5.16",
     "vue-electron": "^1.0.6",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1",
-    "vuex-electron": "^1.0.0"
+    "vuex-electron": "^1.0.0",
+    "electron-store": "^8.0.1"
   },
   "devDependencies": {
     "ajv": "^6.5.0",

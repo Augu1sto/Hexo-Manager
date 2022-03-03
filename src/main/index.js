@@ -3,7 +3,7 @@
 import { app, BrowserWindow, Menu, ipcMain, shell, dialog } from 'electron' // 从electron引入app和BrowserWindow
 import '../renderer/store'
 import { exec } from 'child_process'
-// import { Store } from 'electron-store'
+// import pkg from '../../package.json'
 
 /**
  * Set `__static` path to static files in production
@@ -13,6 +13,10 @@ if (process.env.NODE_ENV !== 'development') {
   global.__static = require('path')
     .join(__dirname, '/static')
     .replace(/\\/g, '\\\\')
+}
+
+if (process.platform === 'win32') {
+  app.setAppUserModelId('hexo-manager')
 }
 
 let mainWindow
@@ -32,9 +36,9 @@ function createWindow () {
     width: 720,
     title: 'Hexo-Manager',
     center: true,
-    frame: true,
+    frame: false,
     titleBarStyle: 'hidden',
-    resizable: true,
+    resizable: false,
     backgroundColor: '#F2F2F2',
     // alwaysOnTop: true,
 
