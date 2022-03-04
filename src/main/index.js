@@ -40,7 +40,7 @@ function createWindow () {
     titleBarStyle: 'hidden',
     resizable: false,
     backgroundColor: '#F2F2F2',
-    // alwaysOnTop: true,
+    show: false,
 
     webPreferences: {
       // 开启node
