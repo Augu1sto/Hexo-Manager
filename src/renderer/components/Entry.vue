@@ -54,6 +54,7 @@
 </template>
 <script>
 export default {
+  name: 'entry-page',
   methods: {
     setConfig () {
       this.$prompt('设置', 'hexo根目录：', {
@@ -91,7 +92,7 @@ export default {
     },
     openFile () {
       const { ipcRenderer } = require('electron')
-      ipcRenderer.send('open_file')
+      ipcRenderer.send('open_editor') // 用自研编辑器打开
     },
 
     openNew () {
@@ -187,7 +188,7 @@ export default {
   color: #ffffff;
 }
 .handle-bar .el-icon-close:hover {
-  color: #af0000;
+  color: #f50e0e;
 }
 
 .el-row {

@@ -1,6 +1,8 @@
 import { ipcMain, BrowserWindow } from 'electron'
 import { openFile, newAndOpenFile, deployAll } from '../core/apis'
 import { setRoot } from '../store/setConfig'
+import { createWindow } from '../window/windowManager'
+import { EDITOR_WINDOW } from '../window/windowLists'
 
 export default {
   listen () {
@@ -44,5 +46,8 @@ export default {
     ipcMain.on('deploy_all', (event) => {
       deployAll(event)
     })
+
+    // 打开编辑器
+    ipcMain.on('open_editor', createWindow(EDITOR_WINDOW))
   }
 }
