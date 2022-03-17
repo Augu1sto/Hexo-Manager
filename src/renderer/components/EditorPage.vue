@@ -1,34 +1,48 @@
 <template>
-  <div id="app">
-    <el-row :gutter="20">
-      <el-col :span="12">
-        <textarea :value="input" @input="update" id="markdown"></textarea>
-      </el-col>
-      <el-col :span="12"><div v-html="compiledMarkdown"></div></el-col>
-    </el-row>
+  <div
+    class="preview-vditor"
+    v-loading="isLoading"
+    element-loading-text="正在努力，请稍候..."
+  >
+    <div id="khaleesi" class="vditor-preview" />
   </div>
 </template>
 
 <script>
-import { marked } from 'marked'
+import Vditor from 'vditor'
+import 'vditor/dist/index.css'
+
 export default {
   name: 'editor-page',
   data () {
     return {
-      input: ''
+      isLoading: true
     }
   },
-  computed: {
-    compiledMarkdown: function () {
-      return marked(this.input, { sanitize: true }) // sanitize过滤掉html标签，防止xss攻击
-    }
+  mounted () {
+    this.initVditor()
   },
   methods: {
-    update (e) {
-      this.input = e.target.value
+    initVditor () {
+      const options = {
+        width: '61.8%',
+        mode: 'sv',
+        toolbarConfig: {
+          pin: true
+        },
+        preview: {
+          delay: 1000,
+          show: true
+        }
+      }
+      this.vditor = new Vditor('khaleesi', options)
+      this.$nextTick(() => {
+        this.isLoading = false
+      })
     }
   }
 }
+
 </script>
 
 <style>
