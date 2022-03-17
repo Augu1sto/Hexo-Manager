@@ -1,3 +1,10 @@
+该分支的编辑器是用textarea+marked自己实现的
+采用vue的input实现实时渲染
+可能日后会继续开发
+
+
+---
+
 # Hexo-Manager
 
 ![banner](https://user-images.githubusercontent.com/38211047/156713434-b510eced-19e8-432d-8105-04e2f0455aaa.png)
@@ -33,6 +40,7 @@ Windows
 - [ ] 更复杂的配置
   - [ ] git配置
   - [ ] 编辑器
+    - [x] 实时渲染
     - [ ] 根据分类构建文件树
     - [ ] 添加标签
   - [ ] hexo各项的基础配置的可视化
