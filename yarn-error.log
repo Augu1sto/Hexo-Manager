@@ -1,5 +1,5 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Program Files\nodejs\node_modules\yarn\bin\yarn.js add gulp-dart-sass --dev
+  C:\Program Files\nodejs\node.exe C:\Program Files\nodejs\node_modules\yarn\bin\yarn.js add @types/brace --dev
 
 PATH: 
   C:\Program Files\Microsoft\jdk-11.0.12.7-hotspot\bin;C:\Program Files\Common Files\Oracle\Java\javapath;C:\ProgramData\Anaconda3;C:\ProgramData\Anaconda3\Library\mingw-w64\bin;C:\ProgramData\Anaconda3\Library\usr\bin;C:\ProgramData\Anaconda3\Library\bin;C:\ProgramData\Anaconda3\Scripts;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Program Files\Git\cmd;C:\Program Files\Microsoft VS Code\bin;C:\Program Files\Java\jdk-17.0.1\bin;C:\Program Files\Java\jdk-17.0.1\jre\bin;C:\Users\15927\.windows-build-tools\python27;C:\Program Files\Microsoft SQL Server\150\Tools\Binn\;C:\Program Files\dotnet\;C:\Users\15927\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\Users\15927\AppData\Roaming\npm\;C:\Program Files\Pandoc\;C:\Users\15927\AppData\Local\Microsoft\WindowsApps;C:\Program Files\JetBrains\PyCharm 2021.3\bin;C:\Program Files\JetBrains\IntelliJ IDEA 2021.3\bin;C:\Users\15927\.dotnet\tools;C:\texlive\2021\bin\win32
@@ -14,14 +14,24 @@ Platform:
   win32 x64
 
 Trace: 
-  Error: EBUSY: resource busy or locked, rmdir 'D:\learning\Hexo-Manager\node_modules\element-theme\node_modules'
+  Error: https://registry.npmjs.org/@types%2fbrace: Not found
+      at Request.params.callback [as _callback] (C:\Users\15927\AppData\Roaming\nvm\v16.8.0\node_modules\yarn\lib\cli.js:67029:18)
+      at Request.self.callback (C:\Users\15927\AppData\Roaming\nvm\v16.8.0\node_modules\yarn\lib\cli.js:140883:22)
+      at Request.emit (node:events:394:28)
+      at Request.<anonymous> (C:\Users\15927\AppData\Roaming\nvm\v16.8.0\node_modules\yarn\lib\cli.js:141855:10)
+      at Request.emit (node:events:394:28)
+      at IncomingMessage.<anonymous> (C:\Users\15927\AppData\Roaming\nvm\v16.8.0\node_modules\yarn\lib\cli.js:141777:12)
+      at Object.onceWrapper (node:events:513:28)
+      at IncomingMessage.emit (node:events:406:35)
+      at endReadableNT (node:internal/streams/readable:1343:12)
+      at processTicksAndRejections (node:internal/process/task_queues:83:21)
 
 npm manifest: 
   {
-    "name": "my-project",
-    "version": "0.0.1",
+    "name": "Hexo-Manager",
+    "version": "0.0.1-alpha",
     "author": "augu1sto",
-    "description": "Hexo-Manager devepoled by electron-vue",
+    "description": "Hexo-Manager developed by electron-vue",
     "license": null,
     "main": "./dist/electron/main.js",
     "scripts": {
@@ -41,8 +51,8 @@ npm manifest:
       "postinstall": "npm run lint:fix"
     },
     "build": {
-      "productName": "my-project",
-      "appId": "",
+      "productName": "Hexo-Manager",
+      "appId": "com.augu1sto.hexo-manager",
       "directories": {
         "output": "build"
       },
@@ -68,14 +78,20 @@ npm manifest:
         "icon": "build/icons/icon.icns"
       },
       "win": {
-        "icon": "build/icons/icon.ico"
+        "icon": "build/icons/icon_.ico",
+        "target": "nsis"
       },
       "linux": {
         "icon": "build/icons"
+      },
+      "nsis": {
+        "oneClick": false,
+        "allowToChangeInstallationDirectory": true
       }
     },
     "dependencies": {
       "axios": "^0.21.0",
+      "electron-store": "^8.0.1",
       "element-ui": "^2.15.6",
       "vue": "^2.5.16",
       "vue-electron": "^1.0.6",
@@ -96,7 +112,7 @@ npm manifest:
       "babel-register": "^6.26.0",
       "cfonts": "^2.1.2",
       "chai": "^4.1.2",
-      "chalk": "^2.4.1",
+      "chalk": "^4.0.0",
       "copy-webpack-plugin": "^4.5.1",
       "cross-env": "^5.1.6",
       "css-loader": "^0.28.11",
@@ -106,6 +122,7 @@ npm manifest:
       "electron-builder": "^22.2.0",
       "electron-debug": "^3.2.0",
       "electron-devtools-installer": "^3.2.0",
+      "electron-store": "^8.0.1",
       "element-theme-chalk": "^2.15.6",
       "eslint": "^4.19.1",
       "eslint-config-standard": "^11.0.0",
@@ -141,6 +158,7 @@ npm manifest:
       "vue-loader": "^15.2.4",
       "vue-style-loader": "^4.1.0",
       "vue-template-compiler": "^2.5.16",
+      "vue2-ace-editor": "^0.0.15",
       "webpack": "^4.15.1",
       "webpack-cli": "^3.0.8",
       "webpack-dev-server": "^3.1.4",
@@ -647,6 +665,13 @@ Lockfile:
     resolved "https://registry.npmmirror.com/ajv-errors/-/ajv-errors-1.0.1.tgz#f35986aceb91afadec4102fbd85014950cefa64d"
     integrity sha512-DCRfO/4nQ+89p/RK43i8Ezd41EqdGIU4ld7nGF8OQ14oc/we5rEntLCUa7+jrn3nn83BosfwZA0wb4pon2o8iQ==
   
+  ajv-formats@^2.1.1:
+    version "2.1.1"
+    resolved "https://registry.npmjs.org/ajv-formats/-/ajv-formats-2.1.1.tgz#6e669400659eb74973bbf2e33327180a0996b520"
+    integrity sha512-Wx0Kx52hxE7C18hkMEggYlEifqWZtYaRgouJor+WMdPnQyEK13vgEWyVNup7SoeeoLMsr4kf5h6dOW11I15MUA==
+    dependencies:
+      ajv "^8.0.0"
+  
   ajv-keywords@^2.1.0:
     version "2.1.1"
     resolved "https://registry.npmmirror.com/ajv-keywords/-/ajv-keywords-2.1.1.tgz#617997fc5f60576894c435f940d819e135b80762"
@@ -675,6 +700,16 @@ Lockfile:
       fast-deep-equal "^3.1.1"
       fast-json-stable-stringify "^2.0.0"
       json-schema-traverse "^0.4.1"
+      uri-js "^4.2.2"
+  
+  ajv@^8.0.0, ajv@^8.6.3:
+    version "8.10.0"
+    resolved "https://registry.npmjs.org/ajv/-/ajv-8.10.0.tgz#e573f719bd3af069017e3b66538ab968d040e54d"
+    integrity sha512-bzqAEZOjkrUMl2afH8dknrq5KEk2SrwdBROR+vH1EKVQTqaUbJVPdc/gEdggTMM0Se+s+Ja4ju4TlNcStKl2Hw==
+    dependencies:
+      fast-deep-equal "^3.1.1"
+      json-schema-traverse "^1.0.0"
+      require-from-string "^2.0.2"
       uri-js "^4.2.2"
   
   align-text@^0.1.1, align-text@^0.1.3:
@@ -1100,6 +1135,11 @@ Lockfile:
     version "2.1.2"
     resolved "https://registry.npmmirror.com/atob/-/atob-2.1.2.tgz#6d9517eb9e030d2436666651e86bd9f6f13533c9"
     integrity sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==
+  
+  atomically@^1.7.0:
+    version "1.7.0"
+    resolved "https://registry.npmjs.org/atomically/-/atomically-1.7.0.tgz#c07a0458432ea6dbc9a3506fffa424b48bccaafe"
+    integrity sha512-Xcz9l0z7y9yQ9rdDaxlmaI4uJHf/T8g9hOEzJcsEqX2SjCj4J20uK7+ldkDHMbpJDK76wF7xEIgxc/vSlsfw5w==
   
   autoprefixer@^6.3.1:
     version "6.7.7"
@@ -2290,6 +2330,11 @@ Lockfile:
       balanced-match "^1.0.0"
       concat-map "0.0.1"
   
+  brace@^0.11.0:
+    version "0.11.1"
+    resolved "https://registry.npmjs.org/brace/-/brace-0.11.1.tgz#4896fcc9d544eef45f4bb7660db320d3b379fe58"
+    integrity sha1-SJb8ydVE7vRfS7dmDbMg07N5/lg=
+  
   braces@^0.1.2:
     version "0.1.5"
     resolved "https://registry.npmmirror.com/braces/-/braces-0.1.5.tgz#c085711085291d8b75fdd74eab0f8597280711e6"
@@ -2748,7 +2793,7 @@ Lockfile:
       escape-string-regexp "^1.0.5"
       supports-color "^5.3.0"
   
-  chalk@^4.1.0, chalk@^4.1.1, chalk@^4.1.2:
+  chalk@^4.0.0, chalk@^4.1.0, chalk@^4.1.1, chalk@^4.1.2:
     version "4.1.2"
     resolved "https://registry.npmmirror.com/chalk/-/chalk-4.1.2.tgz#aac4e2b7734a740867aeb16bf02aad556a1e7a01"
     integrity sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA==
@@ -3219,6 +3264,22 @@ Lockfile:
       readable-stream "^2.2.2"
       typedarray "^0.0.6"
   
+  conf@^10.0.3:
+    version "10.1.1"
+    resolved "https://registry.npmjs.org/conf/-/conf-10.1.1.tgz#ff08046d5aeeee0eaff55d57f5b4319193c3dfda"
+    integrity sha512-z2civwq/k8TMYtcn3SVP0Peso4otIWnHtcTuHhQ0zDZDdP4NTxqEc8owfkz4zBsdMYdn/LFcE+ZhbCeqkhtq3Q==
+    dependencies:
+      ajv "^8.6.3"
+      ajv-formats "^2.1.1"
+      atomically "^1.7.0"
+      debounce-fn "^4.0.0"
+      dot-prop "^6.0.1"
+      env-paths "^2.2.1"
+      json-schema-typed "^7.0.3"
+      onetime "^5.1.2"
+      pkg-up "^3.1.0"
+      semver "^7.3.5"
+  
   conf@^2.0.0:
     version "2.2.0"
     resolved "https://registry.npmmirror.com/conf/-/conf-2.2.0.tgz#ee282efafc1450b61e205372041ad7d866802d9a"
@@ -3673,6 +3734,13 @@ Lockfile:
     resolved "https://registry.npmmirror.com/de-indent/-/de-indent-1.0.2.tgz#b2038e846dc33baa5796128d0804b455b8c1e21d"
     integrity sha512-e/1zu3xH5MQryN2zdVaF0OrdNLUbvWxzMbi+iNA6Bky7l1RoP8a2fIbRocyHclXt/arDrrR6lL3TqFD9pMQTsg==
   
+  debounce-fn@^4.0.0:
+    version "4.0.0"
+    resolved "https://registry.npmjs.org/debounce-fn/-/debounce-fn-4.0.0.tgz#ed76d206d8a50e60de0dd66d494d82835ffe61c7"
+    integrity sha512-8pYCQiL9Xdcg0UPSD3d+0KMlOjp+KGU5EPwYddgzQ7DATsg4fuUDjQtsYLmWjnk2obnNHgV3vE2Y4jejSOJVBQ==
+    dependencies:
+      mimic-fn "^3.0.0"
+  
   debug@2, debug@2.6.9, debug@^2.1.3, debug@^2.2.0, debug@^2.3.3, debug@^2.6.8, debug@^2.6.9, debug@~2.6.4, debug@~2.6.6, debug@~2.6.9:
     version "2.6.9"
     resolved "https://registry.npmmirror.com/debug/-/debug-2.6.9.tgz#5d128515df134ff327e90a4c93f4e077a536341f"
@@ -4094,6 +4162,13 @@ Lockfile:
     dependencies:
       is-obj "^2.0.0"
   
+  dot-prop@^6.0.1:
+    version "6.0.1"
+    resolved "https://registry.npmjs.org/dot-prop/-/dot-prop-6.0.1.tgz#fc26b3cf142b9e59b74dbd39ed66ce620c681083"
+    integrity sha512-tE7ztYzXHIeyvc7N+hR3oi7FIbf/NIjVP9hmAt3yMXzrQ072/fpjGLx2GxNxGxUl5V73MEqYzioOMoVhGMJ5cA==
+    dependencies:
+      is-obj "^2.0.0"
+  
   dotenv-expand@^5.1.0:
     version "5.1.0"
     resolved "https://registry.npmmirror.com/dotenv-expand/-/dotenv-expand-5.1.0.tgz#3fbaf020bfd794884072ea26b1e9791d45a629f0"
@@ -4260,6 +4335,14 @@ Lockfile:
     dependencies:
       conf "^2.0.0"
   
+  electron-store@^8.0.1:
+    version "8.0.1"
+    resolved "https://registry.npmmirror.com/electron-store/-/electron-store-8.0.1.tgz#9b598c1d2edeffebee9d8c1cd957ad368c528925"
+    integrity sha512-ZyLvNywiqSpbwC/pp89O/AycVWY/UJIkmtyzF2Bd0Nm/rLmcFc0NTGuLdg6+LE8mS8qsiK5JMoe4PnrecLHH5w==
+    dependencies:
+      conf "^10.0.3"
+      type-fest "^1.0.2"
+  
   electron-to-chromium@^1.2.7, electron-to-chromium@^1.3.47:
     version "1.4.73"
     resolved "https://registry.npmmirror.com/electron-to-chromium/-/electron-to-chromium-1.4.73.tgz#422f6f514315bcace9615903e4a9b6b9fa283137"
@@ -4281,7 +4364,7 @@ Lockfile:
   
   element-theme-chalk@^2.15.6:
     version "2.15.6"
-    resolved "https://registry.npmmirror.com/element-theme-chalk/-/element-theme-chalk-2.15.6.tgz#54960c5d39834fbe45e3f94c95d16ca62032ab4f"
+    resolved "https://registry.npmjs.org/element-theme-chalk/-/element-theme-chalk-2.15.6.tgz#54960c5d39834fbe45e3f94c95d16ca62032ab4f"
     integrity sha512-xz5drQxpid6Yw0zETIVprZiPoZvt6dxpTthkDn8LxYg+F+3Yh1LThCEWutTHNnDKjfQkG9JqbNHsXMmCSr4vrA==
   
   element-ui@^2.15.6:
@@ -4412,7 +4495,7 @@ Lockfile:
     resolved "https://registry.npmmirror.com/env-paths/-/env-paths-1.0.0.tgz#4168133b42bb05c38a35b1ae4397c8298ab369e0"
     integrity sha512-+6r/UAzikJWJPcQZpBQS+bVmjAMz2BkDP/N4n2Uz1zz8lyw1IHWUeVdh/85gs0dp5A+z76LOQhCZkR6F88mlUw==
   
-  env-paths@^2.2.0:
+  env-paths@^2.2.0, env-paths@^2.2.1:
     version "2.2.1"
     resolved "https://registry.npmmirror.com/env-paths/-/env-paths-2.2.1.tgz#420399d416ce1fbe9bc0a07c62fa68d67fd0f8f2"
     integrity sha512-+h1lkLKhZMTYjog1VEpJNG7NZJWcuc2DDk/qsqSTRRCOXiLjeQ1d1/udrUGhqMxUgAlwKNZ0cf2uqan5GLuS2A==
@@ -6195,7 +6278,7 @@ Lockfile:
   
   iconv-lite@^0.6.2:
     version "0.6.3"
-    resolved "https://registry.npmmirror.com/iconv-lite/-/iconv-lite-0.6.3.tgz#a52f80bf38da1952eb5c681790719871a1a72501"
+    resolved "https://registry.npmjs.org/iconv-lite/-/iconv-lite-0.6.3.tgz#a52f80bf38da1952eb5c681790719871a1a72501"
     integrity sha512-4fCk79wshMdzMp2rH06qWrJE4iolqLhCUH+OiuIgU++RB0+94NlDL81atO7GX55uUKueo0txHNtvEyI6D7WdMw==
     dependencies:
       safer-buffer ">= 2.1.2 < 3.0.0"
@@ -7048,6 +7131,16 @@ Lockfile:
     resolved "https://registry.npmmirror.com/json-schema-traverse/-/json-schema-traverse-0.4.1.tgz#69f6a87d9513ab8bb8fe63bdb0979c448e684660"
     integrity sha512-xbbCH5dCYU5T8LcEhhuh7HJ88HXuW3qsI3Y0zOZFKfZEHcpWiHU/Jxzk629Brsab/mMiHQti9wMP+845RPe3Vg==
   
+  json-schema-traverse@^1.0.0:
+    version "1.0.0"
+    resolved "https://registry.npmjs.org/json-schema-traverse/-/json-schema-traverse-1.0.0.tgz#ae7bcb3656ab77a73ba5c49bf654f38e6b6860e2"
+    integrity sha512-NM8/P9n3XjXhIZn1lLhkFaACTOURQXjWhV4BA/RnOv8xvgqtqpAX9IO4mRQxSx1Rlo4tqzeqb0sOlruaOy3dug==
+  
+  json-schema-typed@^7.0.3:
+    version "7.0.3"
+    resolved "https://registry.npmjs.org/json-schema-typed/-/json-schema-typed-7.0.3.tgz#23ff481b8b4eebcd2ca123b4fa0409e66469a2d9"
+    integrity sha512-7DE8mpG+/fVw+dTpjbxnx47TaMnDfOI1jwft9g1VybltZCduyRQPJPvc+zzKY9WPHxhPWczyFuYa6I8Mw4iU5A==
+  
   json-schema@0.4.0:
     version "0.4.0"
     resolved "https://registry.npmmirror.com/json-schema/-/json-schema-0.4.0.tgz#f7de4cf6efab838ebaeb3236474cbba5a1930ab5"
@@ -7831,6 +7924,16 @@ Lockfile:
     resolved "https://registry.npmmirror.com/mimic-fn/-/mimic-fn-1.2.0.tgz#820c86a39334640e99516928bd03fca88057d022"
     integrity sha512-jf84uxzwiuiIVKiOLpfYk7N46TSy8ubTonmneY9vrpHNAnp0QBt2BxWV9dO3/j+BoVAb+a5G6YDPW3M5HOdMWQ==
   
+  mimic-fn@^2.1.0:
+    version "2.1.0"
+    resolved "https://registry.npmjs.org/mimic-fn/-/mimic-fn-2.1.0.tgz#7ed2c2ccccaf84d3ffcb7a69b57711fc2083401b"
+    integrity sha512-OqbOk5oEQeAZ8WXWydlu9HJjz9WVdEIvamMCcXmuqUYjTknH/sqsWvhQ3vgwKFRR1HpjvNBKQ37nbJgYzGqGcg==
+  
+  mimic-fn@^3.0.0:
+    version "3.1.0"
+    resolved "https://registry.npmjs.org/mimic-fn/-/mimic-fn-3.1.0.tgz#65755145bbf3e36954b949c16450427451d5ca74"
+    integrity sha512-Ysbi9uYW9hFyfrThdDEQuykN4Ey6BuwPD2kpI5ES/nFTDn/98yxYNLZJcgUAKPT/mcrLLKaGzJR9YVxJrIdASQ==
+  
   mimic-response@^1.0.0, mimic-response@^1.0.1:
     version "1.0.1"
     resolved "https://registry.npmmirror.com/mimic-response/-/mimic-response-1.0.1.tgz#4923538878eef42063cb8a3e3b0798781487ab1b"
@@ -8431,6 +8534,13 @@ Lockfile:
     dependencies:
       mimic-fn "^1.0.0"
   
+  onetime@^5.1.2:
+    version "5.1.2"
+    resolved "https://registry.npmjs.org/onetime/-/onetime-5.1.2.tgz#d0e96ebb56b07476df1dd9c4806e5237985ca45e"
+    integrity sha512-kbpaSSGJTWdAY5KPVeMOKXSrPtr8C8C7wodJbcsd51jRnmD+GZu8Y0VoU6Dm5Z4vWr0Ig/1NKuWRKf7j5aaYSg==
+    dependencies:
+      mimic-fn "^2.1.0"
+  
   opn@^5.5.0:
     version "5.5.0"
     resolved "https://registry.npmmirror.com/opn/-/opn-5.5.0.tgz#fc7164fab56d235904c51c3b27da6758ca3b9bfc"
@@ -8838,6 +8948,13 @@ Lockfile:
     integrity sha512-fjAPuiws93rm7mPUu21RdBnkeZNrbfCFCwfAhPWY+rR3zG0ubpe5cEReHOw5fIbfmsxEV/g2kSxGTATY3Bpnwg==
     dependencies:
       find-up "^2.1.0"
+  
+  pkg-up@^3.1.0:
+    version "3.1.0"
+    resolved "https://registry.npmjs.org/pkg-up/-/pkg-up-3.1.0.tgz#100ec235cc150e4fd42519412596a28512a0def5"
+    integrity sha512-nDywThFk1i4BQK4twPQ6TA4RT8bDY96yeuCVBWL3ePARCiEKDRSrNGbFIgUJpLp+XeIR65v8ra7WuJOFUBtkMA==
+    dependencies:
+      find-up "^3.0.0"
   
   plist@^3.0.1, plist@^3.0.4:
     version "3.0.4"
@@ -9800,6 +9917,11 @@ Lockfile:
     version "2.1.1"
     resolved "https://registry.npmmirror.com/require-directory/-/require-directory-2.1.1.tgz#8c64ad5fd30dab1c976e2344ffe7f792a6a6df42"
     integrity sha512-fGxEI7+wsG9xrvdjsrlmL22OMTTiHRwAMroiEeMgq8gzoLC/PQr7RsRDSTLUg/bZAZtF+TVIkHc6/4RIKrui+Q==
+  
+  require-from-string@^2.0.2:
+    version "2.0.2"
+    resolved "https://registry.npmjs.org/require-from-string/-/require-from-string-2.0.2.tgz#89a7fdd938261267318eafe14f9c32e598c36909"
+    integrity sha512-Xf0nWe6RseziFMu+Ap9biiUbmplq6S9/p+7w7YXP/JBHhrUDDUhwa+vANyubuqfZWTveU//DYVGsDG7RKL/vEw==
   
   require-main-filename@^1.0.1:
     version "1.0.1"
@@ -11273,6 +11395,11 @@ Lockfile:
     resolved "https://registry.npmmirror.com/type-fest/-/type-fest-0.20.2.tgz#1bf207f4b28f91583666cb5fbd327887301cd5f4"
     integrity sha512-Ne+eE4r0/iWnpAxD852z3A+N0Bt5RN//NjJwRd2VFHEmrywxf5vsZlh4R6lixl6B+wz/8d+maTSAkN1FIkI3LQ==
   
+  type-fest@^1.0.2:
+    version "1.4.0"
+    resolved "https://registry.npmjs.org/type-fest/-/type-fest-1.4.0.tgz#e9fb813fe3bf1744ec359d55d1affefa76f14be1"
+    integrity sha512-yGSza74xk0UG8k+pLh5oeoYirvIiWo5t0/o3zHHAO2tRDiZcxWP7fywNlXhqb6/r6sWvwi+RsyQMWhVLe4BVuA==
+  
   type-is@~1.6.18:
     version "1.6.18"
     resolved "https://registry.npmmirror.com/type-is/-/type-is-1.6.18.tgz#4e552cd05df09467dcbc4ef739de89f2cf37c131"
@@ -11696,6 +11823,13 @@ Lockfile:
     version "1.9.1"
     resolved "https://registry.npmmirror.com/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.9.1.tgz#1ee3bc9a16ecbf5118be334bb15f9c46f82f5825"
     integrity sha512-4gDntzrifFnCEvyoO8PqyJDmguXgVPxKiIxrBKjIowvL9l+N66196+72XVYR8BBf1Uv1Fgt3bGevJ+sEmxfZzw==
+  
+  vue2-ace-editor@^0.0.15:
+    version "0.0.15"
+    resolved "https://registry.npmjs.org/vue2-ace-editor/-/vue2-ace-editor-0.0.15.tgz#569b208e54ae771ae1edd3b8902ac42f0edc74e3"
+    integrity sha512-e3TR9OGXc71cGpvYcW068lNpRcFt3+OONCC81oxHL/0vwl/V3OgqnNMw2/RRolgQkO/CA5AjqVHWmANWKOtNnQ==
+    dependencies:
+      brace "^0.11.0"
   
   vue@^2.5.16:
     version "2.6.14"
