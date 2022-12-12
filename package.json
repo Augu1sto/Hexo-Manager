@@ -1,6 +1,6 @@
 {
   "name": "Hexo-Manager",
-  "version": "0.0.1-alpha",
+  "version": "1.0.0-beta",
   "author": "augu1sto",
   "description": "Hexo-Manager developed by electron-vue",
   "license": null,
@@ -62,13 +62,21 @@
   },
   "dependencies": {
     "axios": "^0.21.0",
+    "dompurify": "^2.4.1",
+    "electron-log": "^4.4.8",
+    "electron-store": "^8.0.1",
     "element-ui": "^2.15.6",
+    "hexo-util": "^3.0.1",
+    "highlight.js": "^11.7.0",
+    "js-yaml": "^4.1.0",
+    "lodash": "^4.17.21",
+    "marked": "^4.2.3",
+    "vditor": "^3.8.12",
     "vue": "^2.5.16",
     "vue-electron": "^1.0.6",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1",
-    "vuex-electron": "^1.0.0",
-    "electron-store": "^8.0.1"
+    "vuex-electron": "^1.0.0"
   },
   "devDependencies": {
     "ajv": "^6.5.0",
