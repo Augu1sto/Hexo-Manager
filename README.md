@@ -13,6 +13,7 @@ Windows
 选择是用内置编辑器编辑或者系统默认编辑器编辑文件
 
 ## 1.0.0-beta
+
 ### 开发环境
 - Electron-Vue框架
 - NodeJS: v16.8.0
@@ -39,4 +40,3 @@ Windows
 
 ## 开发文档
 https://augu1sto.gitee.io/categories/Electron-vue%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98/
-
