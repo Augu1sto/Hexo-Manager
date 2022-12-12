@@ -27,12 +27,14 @@ windowList.set(ENTRY_WINDOW, ENTRY_URL)
 const EDITOR_WINDOW = {
   height: 1080,
   width: 1920,
+  minWidth: 500,
+  minHeight: 500,
   title: 'Hexo-Manager-editor',
   center: true,
-  frame: true,
-  // titleBarStyle: 'hidden',
+  frame: false,
+  titleBarStyle: 'hidden',
   resizable: true,
-  backgroundColor: '#F2F2F2',
+  backgroundColor: '#4661EF',
   show: false,
   webPreferences: {
     // 开启node

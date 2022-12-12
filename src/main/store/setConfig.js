@@ -10,4 +10,13 @@ function setRoot (root) {
   store.set('hexo_root', root)
 }
 
-export {getRoot, setRoot}
+function getOpenMethod () {
+  let method = store.get('open_method')
+  return method
+}
+
+function setOpenMethod (method) {
+  store.set('open_method', method)
+}
+
+export {getRoot, setRoot, getOpenMethod, setOpenMethod}

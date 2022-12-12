@@ -1,8 +1,6 @@
-import { ipcMain, BrowserWindow } from 'electron'
-import { openFile, newAndOpenFile, deployAll } from '../core/apis'
-import { setRoot } from '../store/setConfig'
-import { createWindow } from '../window/windowManager'
-import { EDITOR_WINDOW } from '../window/windowLists'
+import { ipcMain, BrowserWindow, app, shell } from 'electron'
+import { openFile, newAndOpenFile, deployAll, getRecentFiles, openRencentFile } from '../core/apis'
+import { setRoot, setOpenMethod } from '../store/setConfig'
 
 export default {
   listen () {
@@ -10,6 +8,16 @@ export default {
     ipcMain.on('minimize_w', () => {
       const window = BrowserWindow.getFocusedWindow()
       window.minimize()
+    })
+
+    // 最大化窗口
+    ipcMain.on('maximize_w', () => {
+      const window = BrowserWindow.getFocusedWindow()
+      if (window.isMaximized()) {
+        window.unmaximize()
+      } else {
+        window.maximize()
+      }
     })
 
     // 关闭窗口
@@ -23,10 +31,22 @@ export default {
       }
     })
 
+    // 打开外部网页
+    ipcMain.on('openExUrl', (_, url) => {
+      console.log(url)
+      shell.openExternal(url)
+    })
+
+    // 打开数据目录
+    ipcMain.on('openDataDir', () => {
+      const userDataPath = app.getPath('userData')
+      shell.openPath(userDataPath)
+    })
     // 设置
-    ipcMain.on('setConfig', (event, value) => {
-      console.log(value)
-      setRoot(value)
+    ipcMain.on('setConfig', (event, value1, value2) => {
+      console.log(value1 + value2)
+      setRoot(value1)
+      setOpenMethod(value2)
       event.returnValue = 'setSuccess'
     })
 
@@ -47,7 +67,17 @@ export default {
       deployAll(event)
     })
 
-    // 打开编辑器
-    ipcMain.on('open_editor', createWindow(EDITOR_WINDOW))
+    // // 打开编辑器
+    // ipcMain.on('open_editor', createWindow(EDITOR_WINDOW))
+    // 获得最近3个文件
+    ipcMain.on('get_recent', (event) => {
+      event.returnValue = getRecentFiles()
+    })
+
+    // 打开最近文件
+    ipcMain.on('open_recent', (_, item) => {
+      openRencentFile(item)
+    })
   }
+
 }
