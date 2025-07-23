@@ -28,6 +28,5 @@ export function createWindow (window, ...args) {
     myWindow.on('closed', () => {
       myWindow = null
     })
-    // return myWindow 可行吗？
   }
 }

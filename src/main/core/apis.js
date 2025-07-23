@@ -52,19 +52,50 @@ function openFileBySys (path) {
   return shell.openPath(path)
 }
 
-function openFileByDefault (path) {
-  if (path !== undefined) {
-    console.log(path)
-    let store = new Store()
-    let hexoRoot = store.get('hexo_root')
-    const fs = require('fs')
-    let categories = fs.readdirSync(hexoRoot + '\\public\\categories\\')
-    categories = categories.filter((item) => { return item !== 'index.html' })
-    let tags = fs.readdirSync(hexoRoot + '\\public\\tags\\')
-    tags = tags.filter((item) => { return item !== 'index.html' })
-    return setTimeout(createWindow(EDITOR_WINDOW, path, categories, tags), 0)
+// function openFileByDefault (path) {
+//   if (path !== undefined) {
+//     console.log(path)
+//     let store = new Store()
+//     let hexoRoot = store.get('hexo_root')
+//     const fs = require('fs')
+//     let categories = fs.readdirSync(hexoRoot + '\\public\\categories\\')
+//     categories = categories.filter((item) => { return item !== 'index.html' })
+//     let tags = fs.readdirSync(hexoRoot + '\\public\\tags\\')
+//     tags = tags.filter((item) => { return item !== 'index.html' })
+//     return setTimeout(()=> createWindow(EDITOR_WINDOW, path, categories, tags), 0)
+//   }
+// }
+function openFileByDefault(path) {
+  if (!path) return; // 优化：提前返回，避免多层嵌套
+
+  console.log(path);
+
+  // 只创建一个 Store 实例，避免重复创建
+  const store = new Store();
+  const hexoRoot = store.get('hexo_root');
+  const fs = require('fs');
+  const pathModule = require('path'); // 避免与参数名冲突
+
+  // 使用 path.join 兼容不同操作系统路径分隔符
+  const categoriesDir = pathModule.join(hexoRoot, 'public', 'categories');
+  const tagsDir = pathModule.join(hexoRoot, 'public', 'tags');
+
+  // 读取并过滤 categories
+  let categories = [];
+  if (fs.existsSync(categoriesDir)) {
+    categories = fs.readdirSync(categoriesDir).filter(item => item !== 'index.html');
   }
+
+  // 读取并过滤 tags
+  let tags = [];
+  if (fs.existsSync(tagsDir)) {
+    tags = fs.readdirSync(tagsDir).filter(item => item !== 'index.html');
+  }
+
+  // 正确异步调用 createWindow，避免立即执行
+  setTimeout(() => createWindow(EDITOR_WINDOW, path, categories, tags), 0);
 }
+
 
 function newAndOpenFile (fname) {
   let store = new Store()
