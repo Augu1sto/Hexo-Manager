@@ -1,34 +1,8 @@
 <template>
 	<el-container id="editor-page">
-		<div class="fake-title-bar">
-			{{ require("path").basename(file_path)
-			}}<span v-if="!isSaved" style="color: orangered"> *</span>
-			<div class="handle-bar">
-				<!-- 如果是windows系统 就加上模拟的操作按钮-->
-				<i class="el-icon-minus" @click="minimizeWindow"></i>
-				<i v-if="!isMaximize" class="el-icon-max" @click="maximizeWindow">&#8414;</i>
-				<i v-else class="el-icon-copy-document" @click="maximizeWindow"></i>
-				<i class="el-icon-close" @click="preCloseWindow"></i>
-				<!-- <i class="el-icon-minus"></i>
-				<i class="el-icon-close"></i> -->
-			</div>
-		</div>
+		<fake-title-bar :file_path="file_path" :isSaved="isSaved"></fake-title-bar>
 		<el-header>
-			<div class="title">
-				<div class="title-show" v-if="!titleEditable">
-					<div class="title-text">
-						{{ title }}
-					</div>
-					<div class="icon el-icon-edit" @click="titleEditable = !titleEditable"></div>
-				</div>
-				<div class="title-edit" v-else>
-					<el-input v-model="title"></el-input>
-					<div class="icon el-icon-check" @click="
-						titleEditable = !titleEditable;
-					isSaved = false;
-					"></div>
-				</div>
-			</div>
+			<title-editor :title="title" @update:title="title = $event" @unsaved="isSaved = false"></title-editor>
 			<div class="btn-area">
 				<el-tooltip class="item" effect="dark" content="保存" placement="bottom">
 					<el-button icon="el-icon-finished" @click="saveText"></el-button>
@@ -91,6 +65,10 @@ import 'highlight.js/styles/github.css'
 import { ipcRenderer } from 'electron'
 import { electron } from 'process'
 
+import FakeTitleBar from './ecomponents/FakeTitleBar.vue'
+import TitleEditor from './ecomponents/TitleEditor.vue'
+
+
 let _ = require('lodash')
 marked.setOptions({
 	renderer: new marked.Renderer(),
@@ -108,6 +86,10 @@ marked.setOptions({
 
 export default {
 	name: 'editor-page',
+	components: {
+		FakeTitleBar,
+		TitleEditor
+	},
 	data() {
 		return {
 			file_path: '',
@@ -176,18 +158,18 @@ export default {
 		}
 	},
 	methods: {
-		minimizeWindow() {
-			const { ipcRenderer } = require('electron')
-			ipcRenderer.send('minimize_w')
-		},
-		maximizeWindow() {
-			const { ipcRenderer } = require('electron')
-			ipcRenderer.send('maximize_w')
-		},
-		closeWindow() {
-			const { ipcRenderer } = require('electron')
-			ipcRenderer.send('close_w')
-		},
+		// minimizeWindow() {
+		// 	const { ipcRenderer } = require('electron')
+		// 	ipcRenderer.send('minimize_w')
+		// },
+		// maximizeWindow() {
+		// 	const { ipcRenderer } = require('electron')
+		// 	ipcRenderer.send('maximize_w')
+		// },
+		// closeWindow() {
+		// 	const { ipcRenderer } = require('electron')
+		// 	ipcRenderer.send('close_w')
+		// },
 		// ==============新增===================
 		// 生成：每行 → 段落索引
 		buildLineToParagraphMap(content) {
@@ -352,17 +334,23 @@ export default {
 				cancelButtonText: '取消'
 			})
 				.then(({ value }) => {
-					const slugize = require('hexo-util')
+					const {slugize} = require('hexo-util')
 					const fname = slugize(value)
-					const { ipcRenderer } = require('electron')
-					const replyMessage = ipcRenderer.sendSync('newFile', fname)
-					if (replyMessage === 'success') {
-						this.$message({
-							type: 'success',
-							message: '新建文章: ' + fname + '.md'
-						})
-						console.log(replyMessage)
-					}
+					// const { ipcRenderer } = require('electron')
+					ipcRenderer.invoke('newFile', fname).then(result => {
+						if (result === 'success') {
+							this.$message({
+								type: 'success',
+								message: '新建文章: ' + fname + '.md'
+							})
+							console.log(result)
+						} else {
+							this.$message({
+								type: 'error',
+								message: '新建文章错误: ' + result
+							})
+						}
+					})
 				})
 				.catch(() => {
 					this.$message({
@@ -415,40 +403,40 @@ export default {
 			this.tags.splice(index, 1)
 			this.isSaved = false
 		},
-		// 先保存后退出
-		async preCloseWindow() {
-			if (!this.isSaved) {
-				await this.askToSave()
-			}
-			this.closeWindow()
-		},
-		askToSave: function () {
-			return new Promise((resolve, reject) => {
-				this.$confirm('文件尚未保存, 是否保存文件?', '提示', {
-					confirmButtonText: '保存',
-					cancelButtonText: '取消',
-					type: 'warning'
-				})
-					.then(() => {
-						this.saveText()
-						resolve()
-					})
-					.catch(() => {
-						this.$message({
-							type: 'info',
-							message: '已取消保存'
-						})
-						resolve()
-					})
-			})
-		}
+		// // 先保存后退出
+		// async preCloseWindow() {
+		// 	if (!this.isSaved) {
+		// 		await this.askToSave()
+		// 	}
+		// 	this.closeWindow()
+		// },
+		// askToSave: function () {
+		// 	return new Promise((resolve, reject) => {
+		// 		this.$confirm('文件尚未保存, 是否保存文件?', '提示', {
+		// 			confirmButtonText: '保存',
+		// 			cancelButtonText: '取消',
+		// 			type: 'warning'
+		// 		})
+		// 			.then(() => {
+		// 				this.saveText()
+		// 				resolve()
+		// 			})
+		// 			.catch(() => {
+		// 				this.$message({
+		// 					type: 'info',
+		// 					message: '已取消保存'
+		// 				})
+		// 				resolve()
+		// 			})
+		// 	})
+		// }
 	}
 }
 </script>
 
 <style>
 /* customize icon */
-.handle-bar .el-icon-max {
+/* .handle-bar .el-icon-max {
 	width: 16px;
 }
 
@@ -462,7 +450,7 @@ export default {
 
 .el-icon-copy-document:hover {
 	color: #ffffff;
-}
+} */
 
 /* header */
 #editor-page .el-header {
@@ -474,7 +462,7 @@ export default {
 	margin-top: 30px;
 }
 
-#editor-page .title {
+/* #editor-page .title {
 	flex: auto;
 	width: calc(100% - 300px);
 }
@@ -492,18 +480,6 @@ export default {
 	overflow: hidden;
 	white-space: nowrap;
 	text-overflow: ellipsis;
-}
-
-#editor-page .btn-area {
-	/* flex-basis: 2;
-  flex-shrink: 1; */
-	width: 250px;
-	flex: none;
-	display: flex;
-	flex-direction: row;
-	flex-wrap: nowrap;
-	justify-content: flex-end;
-	align-content: center;
 }
 
 #editor-page .title .icon {
@@ -527,6 +503,19 @@ export default {
 	max-width: 100%;
 	width: auto;
 	font-size: 1.4em;
+} */
+
+
+#editor-page .btn-area {
+	/* flex-basis: 2;
+  flex-shrink: 1; */
+	width: 250px;
+	flex: none;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	justify-content: flex-end;
+	align-content: center;
 }
 
 #editor-page .btn-area .el-button {
