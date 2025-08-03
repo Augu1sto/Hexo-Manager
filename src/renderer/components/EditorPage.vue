@@ -23,7 +23,7 @@
 						@focus="focusedArea = 'editor'"></textarea>
 					<div class="html-area" ref="previewContainer" @scroll="onPreviewScroll"
 						@mouseenter="focusedArea = 'preview'" @mouseleave="focusedArea = 'editor'">
-						<div v-for="(block, index) in compiledParagraphs" :key="index" :ref="'preview-block-' + index"
+						<div v-for="(block, index) in htmlCache" :key="index" :ref="'preview-block-' + index"
 							v-html="block" class="preview-block"></div>
 					</div>
 				</el-main>
@@ -101,7 +101,8 @@ export default {
 			isSaved: true,
 			lineToParagraphMap: [], // ⬅️ 新增映射数组
 
-			focusedArea: 'editor' // 当前焦点区域（editor / preview）
+			focusedArea: 'editor', // 当前焦点区域（editor / preview）
+			htmlCache: []
 		}
 	},
 	created() {
@@ -118,10 +119,9 @@ export default {
 				return res
 			}
 			this.categorie_rec = convertList(categorie_rec)
-			console.log(categorie_rec)
+			// console.log(categorie_rec)
 			this.tag_rec = convertList(tag_rec)
 			this.readText(path)
-			// this.input = this.readText(path)
 		})
 	},
 	mounted() {
@@ -137,17 +137,13 @@ export default {
 			}
 		}
 	},
-	computed: {
-		// compiledMarkdown: function () {
-		//   let clean = DOMPurify.sanitize(this.input)
-		//   return marked(clean)
-		// }
-		compiledParagraphs: function () {
-			let clean = DOMPurify.sanitize(this.input)
-			let blocks = clean.split(/\n\s*\n/) // 按两个换行或空行断段
-			return blocks.map(l => marked(l))
-		}
-	},
+	// computed: {
+	// 	compiledParagraphs: function () {
+	// 		let clean = DOMPurify.sanitize(this.input)
+	// 		let blocks = clean.split(/\n\s*\n/) // 按两个换行或空行断段
+	// 		return blocks.map(l => marked(l))
+	// 	}
+	// },
 	methods: {
 
 		// ==============新增===================
@@ -234,11 +230,36 @@ export default {
 		//     this.input = e.target.value
 		//     this.isSaved = false
 		// }, 300),
+
+		// 构建缓存
+		updateCache() {
+			const rawBlocks = this.input.split(/\n\s*\n/) // 拆分为段落块
+			const newCache = []
+
+			for (let i = 0; i < rawBlocks.length; i++) {
+				const raw = rawBlocks[i]
+				const html = DOMPurify.sanitize(marked(raw))
+
+				// 如果当前块和缓存中的一样，不用更新
+				if (this.htmlCache[i] === html) {
+					newCache[i] = this.htmlCache[i]
+				} else {
+					newCache[i] = html
+				}
+			}
+
+			// 如果段落数量变少，要截断多余的缓存
+			this.htmlCache = newCache
+		},
+
+
 		// 替换旧的 update 方法
 		update: _.debounce(function (e) {
 			this.input = e.target.value
+			this.updateCache()
 			this.lineToParagraphMap = this.buildLineToParagraphMap(this.input)
 			this.isSaved = false
+
 		}, 300),
 
 		readText: function (file) {
@@ -248,13 +269,15 @@ export default {
 			// return fs.readFileSync(file, 'utf8')
 		},
 		extractInfo: function (raw) {
-			console.log(raw)
+			// console.log(raw)
 			let tmp = raw.split('---')
 			let yml = tmp[1]
 			let text = tmp.splice(2).join('---')
 			this.input = text
 			// 新增：初始渲染map
 			this.lineToParagraphMap = this.buildLineToParagraphMap(this.input)
+			// 新增：初始生成缓存
+			this.updateCache()
 			// yaml2json
 			const yaml = require('js-yaml')
 			let brief_info = yaml.load(yml)
@@ -311,7 +334,7 @@ export default {
 				cancelButtonText: '取消'
 			})
 				.then(({ value }) => {
-					const {slugize} = require('hexo-util')
+					const { slugize } = require('hexo-util')
 					const fname = slugize(value)
 					// const { ipcRenderer } = require('electron')
 					ipcRenderer.invoke('newFile', fname).then(result => {
@@ -385,7 +408,6 @@ export default {
 </script>
 
 <style>
-
 /* header */
 #editor-page .el-header {
 	display: flex;
