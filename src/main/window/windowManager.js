@@ -6,9 +6,10 @@ export function createWindow (window, ...args) {
   /**
      * Initial window options
      */
-  let winURL = windowList.get(window)
 
   return () => {
+    let winURL = windowList.get(window)
+
     let myWindow = new BrowserWindow(window)
     myWindow.loadURL(winURL) // 加载窗口的URL -> 来自renderer进程的页面
 

@@ -5,26 +5,15 @@
 			<div class="handle-bar">
 				<el-dropdown trigger="click" @command="handleCommand">
 					<span class="el-dropdown-link">
-						<i
-							class="el-icon-arrow-down"
-						></i>
+						<i class="el-icon-arrow-down"></i>
 					</span>
 					<el-dropdown-menu slot="dropdown">
-						<el-dropdown-item command="developer"
-							>开发者主页</el-dropdown-item
-						>
-						<el-dropdown-item command="github"
-							>项目github</el-dropdown-item
-						>
-						<el-dropdown-item command="dir"
-							>用户数据目录</el-dropdown-item
-						>
+						<el-dropdown-item command="developer">开发者主页</el-dropdown-item>
+						<el-dropdown-item command="github">项目github</el-dropdown-item>
+						<el-dropdown-item command="dir">用户数据目录</el-dropdown-item>
 					</el-dropdown-menu>
 				</el-dropdown>
-				<i
-					class="el-icon-setting"
-					@click="dialogFormVisible = true"
-				></i>
+				<i class="el-icon-setting" @click="dialogFormVisible = true"></i>
 				<i class="el-icon-minus" @click="minimizeWindow"></i>
 				<i class="el-icon-close" @click="closeWindow"></i>
 				<!-- <i class="el-icon-minus"></i>
@@ -40,15 +29,12 @@
 					<el-row>
 						<el-col :push="6" :span="16">
 							<div>
-								<el-divider content-position="right"
-									>最近文件</el-divider
-								>
+								<el-divider content-position="right">最近文件</el-divider>
 								<div class="flist">
 									<ul>
 										<li v-for="(item, index) in fileList" :key="index">
-											<el-link :underline="false" @click="openRencentFile(item)"
-												>{{item}}</el-link
-											>
+											<el-link :underline="false" @click="openRencentFile(item)">{{ item
+											}}</el-link>
 										</li>
 									</ul>
 								</div>
@@ -59,185 +45,164 @@
 				<el-main>
 					<el-row :gutter="25">
 						<el-col :span="10">
-							<el-button style="width: 100%" @click="openFile"
-								>打开</el-button
-							>
+							<el-button style="width: 100%" @click="openFile">打开</el-button>
 						</el-col>
 						<el-col :span="10">
-							<el-button style="width: 100%" @click="openNew"
-								>新建</el-button
-							>
+							<el-button style="width: 100%" @click="openNew">新建</el-button>
 						</el-col>
 					</el-row>
 					<el-row>
 						<el-col :span="20">
-							<el-button
-								type="primary"
-								style="width: 100%"
-								@click="deployAll"
-								>一键部署</el-button
-							>
+							<el-button type="primary" style="width: 100%" @click="deployAll">一键部署</el-button>
 						</el-col>
 					</el-row>
 				</el-main>
 			</el-container>
-			<el-dialog
-				title="设置"
-				:visible.sync="dialogFormVisible"
-				width="70%"
-			>
+			<el-dialog title="设置" :visible.sync="dialogFormVisible" width="70%">
 				<el-form :model="form" label-position="top" size="small">
 					<el-form-item label="hexo根目录">
-						<el-input
-							v-model="form.route"
-							autocomplete="off"
-						></el-input>
+						<el-input v-model="form.route" autocomplete="off"></el-input>
 					</el-form-item>
 					<el-form-item label="文件打开方式">
-						<el-radio v-model="form.openMethod" label="1"
-							>内置编辑器</el-radio
-						>
-						<el-radio v-model="form.openMethod" label="2"
-							>系统默认编辑器</el-radio
-						>
+						<el-radio v-model="form.openMethod" label="1">内置编辑器</el-radio>
+						<el-radio v-model="form.openMethod" label="2">系统默认编辑器</el-radio>
 					</el-form-item>
 				</el-form>
 				<div slot="footer" class="dialog-footer">
 					<el-button @click="cancel">取 消</el-button>
-					<el-button type="primary" @click="setConfig"
-						>确 定</el-button
-					>
+					<el-button type="primary" @click="setConfig">确 定</el-button>
 				</div>
 			</el-dialog>
 		</el-container>
 	</div>
 </template>
 <script>
-const hexoRoot = require("../../main/store/setConfig").getRoot();
-const openMethod = require("../../main/store/setConfig").getOpenMethod();
+const hexoRoot = require('../../main/store/setConfig').getRoot()
+const openMethod = require('../../main/store/setConfig').getOpenMethod()
 
 export default {
-	name: "entry-page",
+	name: 'entry-page',
 	data() {
 		return {
+			fname: '', // 初始化 fname
 			dialogFormVisible: false,
 			form: {
-				route: hexoRoot || "",
-				openMethod: openMethod || "1",
+				route: hexoRoot || '',
+				openMethod: openMethod || '1'
 			},
 			fileList: []
-		};
+		}
 	},
 	created() {
-		const { ipcRenderer } = require("electron");
-		this.fileList = ipcRenderer.sendSync('get_recent');
+		const { ipcRenderer } = require('electron')
+		this.fileList = ipcRenderer.sendSync('get_recent')
 	},
 	methods: {
 		handleCommand(command) {
-			const { ipcRenderer } = require("electron");
-			switch(command) {
+			const { ipcRenderer } = require('electron')
+			switch (command) {
 				case 'developer':
-					ipcRenderer.send('openExUrl', 'https://augu1sto.gitee.io/');
-					break;
+					ipcRenderer.send('openExUrl', 'https://augu1sto.gitee.io/')
+					break
 				case 'github':
-					ipcRenderer.send('openExUrl', 'https://github.com/Augu1sto/Hexo-Manager/');
-					break;
+					ipcRenderer.send('openExUrl', 'https://github.com/Augu1sto/Hexo-Manager/')
+					break
 				case 'dir':
-					ipcRenderer.send('openDataDir');
-					break;
+					ipcRenderer.send('openDataDir')
+					break
 				default:
-					break;
+					break
 			}
 		},
 		setConfig() {
-			const { ipcRenderer } = require("electron");
+			const { ipcRenderer } = require('electron')
 			const replyMessage = ipcRenderer.sendSync(
-				"setConfig",
+				'setConfig',
 				this.form.route,
 				this.form.openMethod
-			);
-			if (replyMessage === "setSuccess") {
+			)
+			if (replyMessage === 'setSuccess') {
 				this.$message({
-					type: "success",
-					message: "设置成功",
-				});
-				console.log(replyMessage);
+					type: 'success',
+					message: '设置成功'
+				})
+				console.log(replyMessage)
 			}
-			this.dialogFormVisible = false;
+			this.dialogFormVisible = false
 		},
 
 		cancel() {
 			this.$message({
-				type: "info",
-				message: "取消设置",
-			});
-			this.dialogFormVisible = false;
+				type: 'info',
+				message: '取消设置'
+			})
+			this.dialogFormVisible = false
 		},
 
 		minimizeWindow() {
-			const { ipcRenderer } = require("electron");
-			ipcRenderer.send("minimize_w");
+			const { ipcRenderer } = require('electron')
+			ipcRenderer.send('minimize_w')
 		},
 
 		closeWindow() {
-			const { ipcRenderer } = require("electron");
-			ipcRenderer.send("close_w");
+			const { ipcRenderer } = require('electron')
+			ipcRenderer.send('close_w')
 		},
 		openRencentFile(item) {
-			const { ipcRenderer } = require("electron");
-			ipcRenderer.send("open_recent", item);
+			const { ipcRenderer } = require('electron')
+			ipcRenderer.send('open_recent', item)
 		},
 		openFile() {
-			const { ipcRenderer } = require("electron");
-			ipcRenderer.send("open_file"); // 用自研编辑器打开
+			const { ipcRenderer } = require('electron')
+			ipcRenderer.send('open_file') // 用自研编辑器打开
 		},
 
 		openNew() {
-			this.$prompt("请输入文章名", "新建文章", {
-				confirmButtonText: "确定",
-				cancelButtonText: "取消",
+			this.$prompt('请输入文章名', '新建文章', {
+				confirmButtonText: '确定',
+				cancelButtonText: '取消'
 			})
 				.then(({ value }) => {
 					//   const fname = value.replace(/[<>:"/\\|?* ]+/g, '-') // 转化文件名，去除特殊字符(包含空格)
-					const { slugize } = require("hexo-util");
-					const fname = slugize(value);
-					console.log(fname);
+					const { slugize } = require('hexo-util')
+					this.fname = slugize(value)
+					console.log(this.fname)
 
-					const { ipcRenderer } = require("electron");
-					const replyMessage = ipcRenderer.sendSync("newFile", fname);
-					if (replyMessage === "success") {
+					const { ipcRenderer } = require('electron')
+					const replyMessage = ipcRenderer.sendSync('newFile', this.fname)
+					if (replyMessage === 'success') {
 						this.$message({
-							type: "success",
-							message: "新建文章: " + fname + ".md",
-						});
-						console.log(replyMessage);
+							type: 'success',
+							message: '新建文章: ' + this.fname + '.md'
+						})
+						console.log(replyMessage)
 					}
 				})
 				.catch(() => {
 					this.$message({
-						type: "info",
-						message: fname,
-					});
-				});
+						type: 'info',
+						message: this.fname
+					})
+				})
 		},
 
 		deployAll() {
-			const { ipcRenderer } = require("electron");
+			const { ipcRenderer } = require('electron')
 			this.$notify({
-				title: "开始部署",
-				duration: 0,
-			});
-			const replyMessage = ipcRenderer.sendSync("deploy_all");
-			if (replyMessage === "deploySuccess") {
+				title: '开始部署',
+				duration: 0
+			})
+			const replyMessage = ipcRenderer.sendSync('deploy_all')
+			if (replyMessage === 'deploySuccess') {
 				this.$notify({
-					title: "部署成功",
-					duration: 0,
-				});
-				console.log(replyMessage);
+					title: '部署成功',
+					duration: 0
+				})
+				console.log(replyMessage)
 			}
-		},
-	},
-};
+		}
+	}
+}
 </script>
 
 <style>
@@ -245,6 +210,7 @@ export default {
 	text-align: center;
 	padding: 0 5px;
 }
+
 .el-aside {
 	color: #333;
 	text-align: center;
@@ -281,6 +247,7 @@ export default {
 	z-index: 10000;
 	-webkit-app-region: no-drag;
 }
+
 .handle-bar i {
 	cursor: pointer;
 	font-size: 16px;
@@ -294,9 +261,11 @@ export default {
 .handle-bar .el-icon-setting:hover {
 	color: #ffffff;
 }
+
 .handle-bar .el-icon-minus:hover {
 	color: #ffffff;
 }
+
 .handle-bar .el-icon-close:hover {
 	color: #f50e0e;
 }
@@ -305,9 +274,11 @@ export default {
 	margin-bottom: 20px;
 	line-height: 40px;
 }
+
 .el-divider {
 	height: 2px;
 }
+
 .el-divider__text.is-right {
 	color: #a3a3a3;
 	background: #f2f2f2;
@@ -352,9 +323,11 @@ li {
 .bg-purple-dark {
 	background: #99a9bf00;
 }
+
 .bg-purple {
 	background: #d3dce600;
 }
+
 .bg-purple-light {
 	background: #e5e9f200;
 }
