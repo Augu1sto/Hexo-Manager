@@ -13,14 +13,6 @@
 				<el-tooltip class="item" effect="dark" content="新建" placement="bottom">
 					<el-button icon="el-icon-document-add" @click="openNew"></el-button>
 				</el-tooltip>
-				<!-- <el-tooltip
-					class="item"
-					effect="dark"
-					content="删除"
-					placement="bottom"
-				>
-					<el-button icon="el-icon-edit-outline"></el-button>
-				</el-tooltip> -->
 			</div>
 		</el-header>
 		<el-container>
@@ -108,8 +100,7 @@ export default {
 			// 修改后是否保存
 			isSaved: true,
 			lineToParagraphMap: [], // ⬅️ 新增映射数组
-			// scrollLockE: false, // ⬅️ 滚动锁，防止双向联动死循环
-			// scrollLockP: true,
+
 			focusedArea: 'editor' // 当前焦点区域（editor / preview）
 		}
 	},
@@ -158,18 +149,7 @@ export default {
 		}
 	},
 	methods: {
-		// minimizeWindow() {
-		// 	const { ipcRenderer } = require('electron')
-		// 	ipcRenderer.send('minimize_w')
-		// },
-		// maximizeWindow() {
-		// 	const { ipcRenderer } = require('electron')
-		// 	ipcRenderer.send('maximize_w')
-		// },
-		// closeWindow() {
-		// 	const { ipcRenderer } = require('electron')
-		// 	ipcRenderer.send('close_w')
-		// },
+
 		// ==============新增===================
 		// 生成：每行 → 段落索引
 		buildLineToParagraphMap(content) {
@@ -205,9 +185,6 @@ export default {
 				this.scrollPreviewTo(paragraphIndex)
 			}
 
-			// setTimeout(() => {
-			// 	this.scrollLockP = false
-			// }, 150)
 		},
 
 		scrollPreviewTo(paragraphIndex) {
@@ -403,54 +380,11 @@ export default {
 			this.tags.splice(index, 1)
 			this.isSaved = false
 		},
-		// // 先保存后退出
-		// async preCloseWindow() {
-		// 	if (!this.isSaved) {
-		// 		await this.askToSave()
-		// 	}
-		// 	this.closeWindow()
-		// },
-		// askToSave: function () {
-		// 	return new Promise((resolve, reject) => {
-		// 		this.$confirm('文件尚未保存, 是否保存文件?', '提示', {
-		// 			confirmButtonText: '保存',
-		// 			cancelButtonText: '取消',
-		// 			type: 'warning'
-		// 		})
-		// 			.then(() => {
-		// 				this.saveText()
-		// 				resolve()
-		// 			})
-		// 			.catch(() => {
-		// 				this.$message({
-		// 					type: 'info',
-		// 					message: '已取消保存'
-		// 				})
-		// 				resolve()
-		// 			})
-		// 	})
-		// }
 	}
 }
 </script>
 
 <style>
-/* customize icon */
-/* .handle-bar .el-icon-max {
-	width: 16px;
-}
-
-.handle-bar .el-icon-max:hover {
-	color: #ffffff;
-}
-
-#editor-page .handle-bar .el-icon-copy-document {
-	transform: rotate(180deg);
-}
-
-.el-icon-copy-document:hover {
-	color: #ffffff;
-} */
 
 /* header */
 #editor-page .el-header {
@@ -461,49 +395,6 @@ export default {
 	justify-content: space-between;
 	margin-top: 30px;
 }
-
-/* #editor-page .title {
-	flex: auto;
-	width: calc(100% - 300px);
-}
-
-#editor-page .title-show,
-#editor-page .title-edit {
-	display: flex;
-	flex-direction: row;
-	justify-content: flex-start;
-	align-items: center;
-	width: 100%;
-}
-
-#editor-page .title-text {
-	overflow: hidden;
-	white-space: nowrap;
-	text-overflow: ellipsis;
-}
-
-#editor-page .title .icon {
-	font-size: 1.2em;
-	color: rgba(255, 255, 255, 0.7);
-	cursor: pointer;
-	width: 30px;
-}
-
-#editor-page .title .icon:hover {
-	color: rgba(255, 255, 255);
-}
-
-#editor-page .title-show {
-	color: white;
-	font-size: 1.5em;
-	font-weight: bold;
-}
-
-#editor-page .title-edit .el-input {
-	max-width: 100%;
-	width: auto;
-	font-size: 1.4em;
-} */
 
 
 #editor-page .btn-area {
